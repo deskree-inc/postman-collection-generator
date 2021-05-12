@@ -1,5 +1,5 @@
 import {PostmanController} from "./interfaces/postmanController";
-import {Collection, Item, ItemGroup, Request} from "postman-collection";
+import {Collection, ItemGroup} from "postman-collection";
 import * as fs from "fs";
 import * as path from "path";
 
@@ -58,33 +58,32 @@ export class Postman {
             controller.routes.forEach((obj) => {
                 const request = {
                     url: `${this._baseUrl}${obj.url}`,
-                    method: obj.method,
-                    auth: null,
-                    body: null
+                    method: obj.method
                 };
                 if (obj.hasOwnProperty('body')) {
-                    request.body = {
+                    request['body'] = {
                         mode: 'raw',
                         raw: JSON.stringify(obj.body),
                     }
                 }
-                const postmanRequest = new Request(request);
                 if (obj.hasOwnProperty('headers')) {
-                    for (const header of obj.headers) {
-                        postmanRequest.addHeader(header)
-                    }
+                    request['header'] = obj.headers;
                 }
                 if (obj.hasOwnProperty('params')) {
-                    postmanRequest.addHeader(obj.params)
+                    request.url += '?';
+                    for (const param of obj.params) {
+                        request.url += `${param}&`
+                    }
+                    request.url = request.url.slice(0, -1);
                 }
-                const postmanItem = new Item({
-                    name: obj.name,
-                    request: postmanRequest
-                });
                 if (obj.hasOwnProperty('description')) {
-                    postmanItem.describe(obj.description);
+                    request['description'] = obj.description
                 }
-                group.items.add(postmanItem);
+                const item = {
+                    name: obj.name,
+                    request: request
+                }
+                group.items.add(item);
             });
 
             this.postmanCollection.items.add(group);
