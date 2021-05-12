@@ -81,7 +81,7 @@ describe('Postman Unit test', () =>{
 
     })
 
-    it('Generate controllers with exception on readFileSync', async () => {
+    it('Generate controllers with exception on write the file', async () => {
         const postman = new Postman('Test', 'https://test.com');
         const generateControllers = jest.spyOn(Postman.prototype as any, 'generateControllers').mockImplementation(() => obj);
         mockWriteSync.mockImplementation((f,d,callback: (error:string) => void) => {
