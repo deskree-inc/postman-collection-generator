@@ -1,5 +1,5 @@
 import {PostmanController} from "./interfaces/postmanController";
-import {Collection, Item, ItemGroup} from "postman-collection";
+import {Collection, Item, ItemGroup, Request} from "postman-collection";
 import * as fs from "fs";
 import * as path from "path";
 
@@ -41,31 +41,47 @@ export class Postman {
     }
 
     private generatePostmanCollection(controller: PostmanController) {
+        console.log(controller);
+        if (controller.hasOwnProperty('routes')) {
+            console.log('creating')
+            const group = new ItemGroup({name: controller.name});
+            group.describe(controller.description);
 
-        const group = new ItemGroup({name: controller.name});
-        group.describe(controller.description);
-
-        controller.routes.forEach((obj) => {
-            const request = {
-                url: `${this._baseUrl}${obj.url}`,
-                method: obj.method,
-                auth: null,
-                body: null
-            };
-            if (obj.hasOwnProperty('body')) {
-                request.body = {
-                    mode: 'raw',
-                    raw: JSON.stringify(obj.body),
+            controller.routes.forEach((obj) => {
+                const request = {
+                    url: `${this._baseUrl}${obj.url}`,
+                    method: obj.method,
+                    auth: null,
+                    body: null
+                };
+                if (obj.hasOwnProperty('body')) {
+                    request.body = {
+                        mode: 'raw',
+                        raw: JSON.stringify(obj.body),
+                    }
                 }
-            }
-            const postmanRequest = new Item({
-                name: obj.name,
-                request: request
+                const postmanRequest = new Request(request);
+                if (obj.hasOwnProperty('headers')) {
+                    for (const header of obj.headers) {
+                        postmanRequest.addHeader(header)
+                    }
+                }
+                if (obj.hasOwnProperty('params')) {
+                    postmanRequest.addHeader(obj.params)
+                }
+                const postmanItem = new Item({
+                    name: obj.name,
+                    request: postmanRequest
+                });
+                if (obj.hasOwnProperty('description')) {
+                    postmanItem.describe(obj.description);
+                }
+                group.items.add(postmanItem);
             });
-            group.items.add(postmanRequest);
-        });
 
-        this.postmanCollection.items.add(group);
+            this.postmanCollection.items.add(group);
+        }
+
     }
 
     private saveFile(outputPath: string) {
