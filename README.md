@@ -1,4 +1,4 @@
-# postman-generator
+# postman-collection-generator
 
 This package generates postman collection from express controllers.
 
@@ -7,24 +7,24 @@ This package generates postman collection from express controllers.
 Install package as a dev dependency via npm.
 
 ```
-npm install --save @deskree-inc/postman-generator
+npm install --save @deskree/postman-collection-generator
 ```
 
 Import package either into the base class of your controllers or to each controller individually:
 
 ```
-import {PostmanController} from "@deskree-inc/postman-collection-generator";
+import {PostmanController} from "@deskree/postman-collection-generator";
 ```
 
 ## Using
 
 ### Controller Data Structure
 
-postman-generator creates postman collections from express controllers. In order for the collection and items to be generated correctly, each controller has to be a class that implements a `PostmanController` and have the apprpriate data structure. See example below:
+postman-collection-generator creates postman collections from express controllers. In order for the collection and items to be generated correctly, each controller has to be a class that implements a `PostmanController` and have the apprpriate data structure. See example below:
 
 ```
 // exampleController.ts
-import {PostmanController} from "@deskree-inc/postman-collection-generator";
+import {PostmanController} from "@deskree/postman-collection-generator";
 
 export class ExampleController implements PostmanController {
 
@@ -82,7 +82,7 @@ export class ExampleController implements PostmanController {
 
 ### Configure `package.json`
 
-In order to run postman-generator, just add the following line into your `package.json`'s `"scripts"` with appropriate parameters. Example:
+In order to run postman-collection-generator, just add the following line into your `package.json`'s `"scripts"` with appropriate parameters. Example:
 
 ```
 ...
