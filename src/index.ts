@@ -32,9 +32,5 @@ const postman = new Postman(argv.integrationName, argv.baseURL);
 if (argv.verbose) {
     postman.verbose = true;
 }
-postman.run(argv.folder, argv.outputDir).then(() => {
-    console.log('Finished');
-});
-
-
+postman.run(argv.folder, argv.outputDir);
 

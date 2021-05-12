@@ -23,12 +23,12 @@ export class Postman {
         });
     }
 
-    private async generateControllers(dirPath: string): Promise<PostmanController[]> {
+    private generateControllers(dirPath: string): PostmanController[] {
         const files = fs.readdirSync(dirPath);
         const response = [];
         for(const file of files) {
             const location = path.join(`${process.cwd()}/${dirPath}/${file}`);
-            const _module = await import(`${location}`) as PostmanController;
+            const _module = require(`${location}`) as PostmanController;
             if (_module) {
                 if (this._verbose) {
                     Postman.debug(`Saving ${location}`);
@@ -37,13 +37,13 @@ export class Postman {
             }
         }
         return response;
-
     }
 
     private generatePostmanCollection(controller: PostmanController) {
-        console.log(controller);
         if (controller.hasOwnProperty('routes')) {
-            console.log('creating')
+            if (this._verbose) {
+                Postman.debug('creating');
+            }
             const group = new ItemGroup({name: controller.name});
             group.describe(controller.description);
 
@@ -99,9 +99,9 @@ export class Postman {
         });
     }
 
-    public async run(dirPath: string, outputPath: string) {
+    public run(dirPath: string, outputPath: string) {
         try {
-            const controllers = await this.generateControllers(dirPath);
+            const controllers = this.generateControllers(dirPath);
             for (const controller of controllers) {
                 this.generatePostmanCollection(controller)
             }
