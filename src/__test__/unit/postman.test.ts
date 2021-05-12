@@ -58,7 +58,7 @@ describe('Postman Unit test', () =>{
 
     it('Generate controllers with exception', async () => {
         const postman = new Postman('Test', 'https://test.com');
-        const generateControllers = jest.spyOn(Postman.prototype as any, 'generateControllers').mockImplementation(() => obj);
+        const generateControllers = jest.spyOn(Postman.prototype as any, 'generateControllers').mockRejectedValue('error');
         try {
             await postman.run('../', './');
         } catch (e) {
