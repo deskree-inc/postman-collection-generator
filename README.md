@@ -121,7 +121,7 @@ The command will generate `collection.json` file in the specified folder. You ca
 ## Authors
 
 * **Deskree Team** - [deskree-inc](https://github.com/deskree-inc)
-* **Gustavo Sanches** - [antero10](https://github.com/antero10)
+* **Gustavo Sanchez** - [antero10](https://github.com/antero10)
 
 ## License
 
