@@ -4,20 +4,15 @@ import * as fs from "fs";
 import * as path from "path";
 
 export class Postman {
-    private controllers: Array<PostmanController> = [];
+
     private postmanCollection
-    private _collectionName: string;
-    private _baseUrl: string;
+    private readonly _collectionName: string;
+    private readonly _baseUrl: string;
+    private _verbose: boolean = false;
 
-
-    public set integrationName(value: string) {
-        this._collectionName = value;
+    public set verbose(value: boolean) {
+        this._verbose = value;
     }
-
-    public set baseUrl(value: string) {
-        this._baseUrl = value;
-    }
-
     constructor(integrationName: string, baseUrl: string) {
         this._collectionName = integrationName;
         this._baseUrl = baseUrl;
@@ -28,25 +23,30 @@ export class Postman {
         });
     }
 
-    private generateControllers(dirPath: string) {
+    private async generateControllers(dirPath: string): Promise<PostmanController[]> {
         const files = fs.readdirSync(dirPath);
+        const response = [];
         for(const file of files) {
-            const _module = require(path.join(`${process.cwd()}/${dirPath}`, file)).default;
+            const location = path.join(`${process.cwd()}/${dirPath}/${file}`);
+            const _module = await import(`${location}`) as PostmanController;
             if (_module) {
-                const obj = new _module();
-                this.controllers.push(obj);
+                if (this._verbose) {
+                    Postman.debug(`Saving ${location}`);
+                }
+                response.push(_module);
             }
         }
+        return response;
 
     }
 
-    public generatePostmanCollection(controller: PostmanController) {
+    private generatePostmanCollection(controller: PostmanController) {
 
         const group = new ItemGroup({name: controller.name});
         group.describe(controller.description);
 
         controller.routes.forEach((obj) => {
-            let request = {
+            const request = {
                 url: `${this._baseUrl}${obj.url}`,
                 method: obj.method,
                 auth: null,
@@ -68,25 +68,34 @@ export class Postman {
         this.postmanCollection.items.add(group);
     }
 
-    public saveFile(outputPath: string) {
+    private saveFile(outputPath: string) {
         // Convert the collection to JSON
         // so that it can be exported to a file
         const collectionJSON = this.postmanCollection.toJSON();
-
         // Create a collection.json file. It can be imported to postman
         fs.writeFile(`${outputPath}/collection.json`, JSON.stringify(collectionJSON), (err) => {
             if (err) {
-                throw(err);
+                throw err;
             }
-            console.log(`Collection generated`);
+            if (this._verbose) {
+                Postman.debug('File saved');
+            }
         });
     }
 
-    public run(dirPath: string, outputPath: string) {
-        this.generateControllers(dirPath);
-        for (const controller of this.controllers) {
-            this.generatePostmanCollection(controller)
+    public async run(dirPath: string, outputPath: string) {
+        try {
+            const controllers = await this.generateControllers(dirPath);
+            for (const controller of controllers) {
+                this.generatePostmanCollection(controller)
+            }
+            this.saveFile(outputPath);
+        } catch (e) {
+            throw e;
         }
-        this.saveFile(outputPath);
+    }
+
+    private static debug(message: string) {
+        console.info(message);
     }
 }
