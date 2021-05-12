@@ -28,15 +28,23 @@ export class Postman {
         const response = [];
         for(const file of files) {
             const location = path.join(`${process.cwd()}/${dirPath}/${file}`);
-            const _module = require(`${location}`) as PostmanController;
+            const _module = require(path.join(`${process.cwd()}/${dirPath}`, file)).default;
             if (_module) {
+                const obj = new _module();
                 if (this._verbose) {
                     Postman.debug(`Saving ${location}`);
                 }
-                response.push(_module);
+                if (Postman.isPostmanCollection(obj)) {
+                    response.push(obj);
+                }
+
             }
         }
         return response;
+    }
+
+    private static isPostmanCollection(object: any): object is PostmanController {
+        return 'name' in object && 'description' in object;
     }
 
     private generatePostmanCollection(controller: PostmanController) {

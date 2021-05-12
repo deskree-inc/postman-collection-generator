@@ -62,9 +62,10 @@ describe('Postman Unit test', () =>{
         try {
             await postman.run('../', './');
         } catch (e) {
+
             expect(generateControllers).toHaveBeenCalledTimes(1);
             expect(mockWriteSync).toHaveBeenCalledTimes(0);
-            expect(e).toBe('error');
+            expect(e.message).toBe('controllers is not iterable');
         }
 
     })
