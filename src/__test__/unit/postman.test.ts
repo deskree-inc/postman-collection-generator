@@ -30,7 +30,18 @@ describe('Postman Unit test', () =>{
     });
     it('Generate controllers with routes without body', async () => {
         const postman = new Postman('Test', 'https://test.com');
-        const generateControllers = jest.spyOn(Postman.prototype as any, 'generateControllers').mockImplementation(() => obj);
+        const newObj = [{
+            name: 'Test',
+            description: 'Description',
+            routes: [{
+                name: 'test endpoint',
+                url: 'test',
+                method: 'GET',
+                description: 'Some description',
+                body: null
+            }]
+        } as PostmanController];
+        const generateControllers = jest.spyOn(Postman.prototype as any, 'generateControllers').mockImplementation(() => newObj);
         await postman.run('../', './');
         expect(mockWriteSync).toHaveBeenCalledTimes(1);
         expect(generateControllers).toHaveBeenCalledTimes(1);
@@ -84,6 +95,51 @@ describe('Postman Unit test', () =>{
             expect(e).toBe('error');
         }
 
+    })
+
+    it('Generate controllers with routes with headers', async () => {
+        const postman = new Postman('Test', 'https://test.com');
+        const newObj = [{
+            name: 'Test',
+            description: 'Description',
+            routes: [{
+                name: 'test endpoint',
+                url: 'test',
+                method: 'GET',
+                description: 'Some description',
+                body: null,
+                headers: [{
+                    'X-Auth': 'key'
+                }]
+            }]
+        } as PostmanController];
+        const generateControllers = jest.spyOn(Postman.prototype as any, 'generateControllers').mockImplementation(() => newObj);
+        await postman.run('../', './');
+        expect(mockWriteSync).toHaveBeenCalledTimes(1);
+        expect(generateControllers).toHaveBeenCalledTimes(1);
+    })
+
+    it('Generate controllers with routes with params', async () => {
+        const postman = new Postman('Test', 'https://test.com');
+        const newObj = [{
+            name: 'Test',
+            description: 'Description',
+            routes: [{
+                name: 'test endpoint',
+                url: 'test',
+                method: 'GET',
+                description: 'Some description',
+                body: null,
+                headers: [{
+                    'X-Auth': 'key'
+                }],
+                params: ['query', 'user']
+            }]
+        } as PostmanController];
+        const generateControllers = jest.spyOn(Postman.prototype as any, 'generateControllers').mockImplementation(() => newObj);
+        await postman.run('../', './');
+        expect(mockWriteSync).toHaveBeenCalledTimes(1);
+        expect(generateControllers).toHaveBeenCalledTimes(1);
     })
 
 })
