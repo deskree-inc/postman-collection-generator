@@ -12,13 +12,15 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 14
+      - name: Remove .npmrc (This is inteded, to have many npm registry)
+        run: rm .npmrc
       - name: Install
         run: npm install
       - name: Build
         run: npm run build
-      - name: Publish
-        run: |
-          npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
-          npm publish --ignore-scripts
+      - name: Config
+        run: npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
+      - name: Push
+        run: npm publish --ignore-scripts --tag ${{ github.event.release.tag_name }}
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

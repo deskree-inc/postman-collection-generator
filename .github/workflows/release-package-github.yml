@@ -3,18 +3,16 @@ on:
   release:
     types: [created]
 jobs:
-  build:
+  publish-github:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v1
         with:
-          node-version: '14.x'
-          registry-url: 'https://npm.pkg.github.com'
-          scope: '@octocat'
+          node-version: 14
       - name: Install
         run: npm install
       - name: Publish
         run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
