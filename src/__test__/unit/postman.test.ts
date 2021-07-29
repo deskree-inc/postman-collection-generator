@@ -94,7 +94,6 @@ describe('Postman Unit test', () =>{
             expect(mockWriteSync).toHaveBeenCalledTimes(1);
             expect(e).toBe('error');
         }
-
     })
 
     it('Generate controllers with routes with headers', async () => {

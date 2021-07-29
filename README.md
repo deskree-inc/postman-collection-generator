@@ -20,7 +20,7 @@ import {PostmanController} from "@deskree/postman-collection-generator";
 
 ### Controller Data Structure
 
-postman-collection-generator creates postman collections from express controllers. In order for the collection and items to be generated correctly, each controller has to be a class that implements a `PostmanController` and have the apprpriate data structure. See example below:
+postman-collection-generator creates postman collections from express controllers. In order for the collection and items to be generated correctly, each controller has to be a class that implements a `PostmanController` and have the appropriate data structure. See example below:
 
 ```
 // exampleController.ts
