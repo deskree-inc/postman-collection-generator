@@ -2,7 +2,7 @@ name: Node.js Package
 
 on:
   release:
-    types: [created]
+    types: [ created ]
 
 jobs:
   publish:
@@ -20,6 +20,8 @@ jobs:
         run: npm run build
       - name: Config
         run: npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
+      - name: Update Project Version
+        run: npm version ${{ github.event.release.tag_name }} --no-git-tag-version
       - name: Push
         run: npm publish --ignore-scripts --tag ${{ github.event.release.tag_name }}
         env:
