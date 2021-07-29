@@ -10,6 +10,9 @@
     "test": "jest --coverage",
     "build": "tsc"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/@deskree-inc"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/deskree-inc/postman-collection-generator.git"
