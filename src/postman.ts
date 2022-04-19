@@ -106,12 +106,15 @@ export class Postman {
                 } else {
                     console.error(e);
                 }
+                process.exit(1);
                 throw e;
-            } else if (this._verbose) {
-                Postman.debug('File saved');
-                Postman.debug(JSON.stringify(collectionJSON));
+            } else {
+                if (this._verbose) {
+                    Postman.debug('File saved');
+                    Postman.debug(JSON.stringify(collectionJSON));
+                }
+                process.exit(0);
             }
-            process.exit(1);
         });
     }
 
