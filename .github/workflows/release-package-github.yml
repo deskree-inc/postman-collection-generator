@@ -24,6 +24,6 @@ jobs:
       - name: Build project
         run: npm run build
 
-      - run: npm publish --ignore-scripts --tag postman-collection-generator@${{ github.event.release.tag_name }}
+      - run: npm publish --ignore-scripts --tag postman-collection-generator@latest
         env:
           NODE_AUTH_TOKEN: ${{secrets.GH_ACCESS_TOKEN}}
