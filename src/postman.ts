@@ -117,6 +117,8 @@ export class Postman {
         try {
             Postman.debug(`Initialized postman collection generation from directory ${dirPath}. Saving data to ${outputPath}`);
             const controllers = this.generateControllers(dirPath);
+            Postman.debug("List of all controllers:");
+            Postman.debug(JSON.stringify(controllers));
             for (const controller of controllers) {
                 this.generatePostmanCollection(controller)
             }
