@@ -1,5 +1,5 @@
 {
-  "name": "@deskree/postman-collection-generator",
+  "name": "@deskree-inc/postman-collection-generator",
   "version": "1.0.3",
   "description": "Package that generates Postman collection from controllers in Express.js",
   "main": "lib/src/index.js",
