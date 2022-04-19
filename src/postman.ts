@@ -50,9 +50,9 @@ export class Postman {
     private generatePostmanCollection(controller: PostmanController) {
         if (controller.hasOwnProperty('routes')) {
             if (this._verbose) {
-                Postman.debug('creating');
+                Postman.debug('Generating postman collection');
+                Postman.debug(`Working on ${controller.name}`);
             }
-            Postman.debug(`Working on ${controller.name}`);
             const group = new ItemGroup({name: controller.name});
             group.describe(controller.description);
 
@@ -109,7 +109,9 @@ export class Postman {
                 throw e;
             } else if (this._verbose) {
                 Postman.debug('File saved');
+                Postman.debug(JSON.stringify(collectionJSON));
             }
+            process.exit(1);
         });
     }
 
