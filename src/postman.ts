@@ -52,7 +52,7 @@ export class Postman {
             if (this._verbose) {
                 Postman.debug('creating');
             }
-            console.log(`Working on ${controller.name}`);
+            Postman.debug(`Working on ${controller.name}`);
             const group = new ItemGroup({name: controller.name});
             group.describe(controller.description);
 
@@ -99,10 +99,15 @@ export class Postman {
         // Create a collection.json file. It can be imported to postman
         fs.writeFile(`${outputPath}/collection.json`, JSON.stringify(collectionJSON), (e) => {
             if (e) {
-                console.error(e);
+                if (typeof e === "string") {
+                    Postman.debug(e);
+                } else if (typeof e === "object"){
+                    Postman.debug(JSON.stringify(e));
+                } else {
+                    console.error(e);
+                }
                 throw e;
-            }
-            if (this._verbose) {
+            } else if (this._verbose) {
                 Postman.debug('File saved');
             }
         });
@@ -110,14 +115,20 @@ export class Postman {
 
     public run(dirPath: string, outputPath: string) {
         try {
-            console.log(`Initialized postman collection generation from directory ${dirPath}. Saving data to ${outputPath}`);
+            Postman.debug(`Initialized postman collection generation from directory ${dirPath}. Saving data to ${outputPath}`);
             const controllers = this.generateControllers(dirPath);
             for (const controller of controllers) {
                 this.generatePostmanCollection(controller)
             }
             this.saveFile(outputPath);
         } catch (e) {
-            console.error(e);
+            if (typeof e === "string") {
+                Postman.debug(e);
+            } else if (typeof e === "object"){
+                Postman.debug(JSON.stringify(e));
+            } else {
+                console.error(e);
+            }
             throw e;
         }
     }
