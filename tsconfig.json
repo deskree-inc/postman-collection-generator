@@ -7,14 +7,13 @@
     "sourceMap": true,
     "strict": false,
     "resolveJsonModule": true,
-    "target": "es2017",
+    "target": "es5",
     "skipLibCheck": true,
     "declaration": true,
     "rootDir": "src"
   },
   "compileOnSave": true,
   "include": [
-    "./src",
-    "*.json"
+    "./src"
   ]
 }
