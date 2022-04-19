@@ -135,7 +135,7 @@ export class Postman {
         }
     }
 
-    private static debug(message: string) {
+    private static debug(message) {
         console.info(message);
     }
 }
