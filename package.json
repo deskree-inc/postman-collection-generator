@@ -8,12 +8,9 @@
     "lib/**/*.js",
     "lib/**/*.json"
   ],
-  "bin": {
-    "postman-generator": "lib/src/index.js"
-  },
   "scripts": {
     "test": "jest --coverage",
-    "build": "tsc"
+    "build": "rimraf lib && tsc"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/@deskree-inc"
@@ -22,6 +19,9 @@
     "type": "git",
     "url": "git+https://github.com/deskree-inc/postman-collection-generator.git"
   },
+  "pre-commit": [
+    "lint"
+  ],
   "keywords": [
     "postman",
     "typescript",
@@ -48,5 +48,8 @@
     "fs": "0.0.1-security",
     "postman-collection": "^3.6.11",
     "yargs": "^17.0.1"
+  },
+  "directories": {
+    "lib": "lib"
   }
 }
