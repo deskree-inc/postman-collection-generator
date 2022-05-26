@@ -65,6 +65,11 @@ export class Postman {
                     request['body'] = {
                         mode: 'raw',
                         raw: JSON.stringify(obj.body),
+                        options: {
+                            raw: {
+                                language: "json"
+                            }
+                        }
                     }
                 }
                 if (obj.hasOwnProperty('headers')) {
