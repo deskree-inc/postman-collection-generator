@@ -59,7 +59,8 @@ export class Postman {
             controller.routes.forEach((obj) => {
                 const request = {
                     url: `${this._baseUrl}${obj.url}`,
-                    method: obj.method
+                    method: obj.method,
+                    headers: {}
                 };
                 if (obj.hasOwnProperty('body')) {
                     request['body'] = {
@@ -73,8 +74,9 @@ export class Postman {
                     }
                 }
                 if (obj.hasOwnProperty('headers')) {
-                    request['header'] = obj.headers;
+                    request.headers = obj.headers;
                 }
+                request.headers['Content-Type'] = 'application/json';
                 if (obj.hasOwnProperty('params')) {
                     request.url += '?';
                     for (const param of obj.params) {
