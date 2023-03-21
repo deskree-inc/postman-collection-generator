@@ -1,8 +1,8 @@
-import {PostmanController} from "./interfaces/postmanController";
+import {PostmanControllerInterface} from "./interfaces/postmanController.interface";
 import {Collection, Item, ItemGroup} from "postman-collection";
 import * as fs from "fs";
 import * as path from "path";
-import {PostmanRoute} from "./interfaces/postmanRoute";
+import {PostmanRouteInterface} from "./interfaces/postmanRoute.interface";
 
 export class Postman {
 
@@ -24,7 +24,7 @@ export class Postman {
         });
     }
 
-    private generateControllers(dirPath: string): PostmanController[] {
+    private generateControllers(dirPath: string): PostmanControllerInterface[] {
         const files = fs.readdirSync(dirPath);
         const response = [];
         for(const file of files) {
@@ -44,11 +44,11 @@ export class Postman {
         return response;
     }
 
-    private static isPostmanCollection(object: any): object is PostmanController {
+    private static isPostmanCollection(object: any): object is PostmanControllerInterface {
         return 'name' in object && 'description' in object;
     }
 
-    private generatePostmanCollection(controller: PostmanController) {
+    private generatePostmanCollection(controller: PostmanControllerInterface) {
         if (controller.hasOwnProperty('routes')) {
             if (this._verbose) {
                 Postman.debug('Generating postman collection');
@@ -58,7 +58,7 @@ export class Postman {
             group.describe(controller.description);
 
             controller.routes.forEach((obj) => {
-                const request: PostmanRoute = {
+                const request: PostmanRouteInterface = {
                     url: `${this._baseUrl}${obj.url}`,
                     method: obj.method,
                     headers: {}
@@ -149,7 +149,7 @@ export class Postman {
         }
     }
 
-    private static debug(message: string | PostmanController) {
+    private static debug(message: string | PostmanControllerInterface) {
         console.info(message);
     }
 }

@@ -1,4 +1,4 @@
-export interface PostmanRoute {
+export interface PostmanRouteInterface {
     name?: string,
     url: string,
     method: string,

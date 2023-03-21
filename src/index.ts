@@ -2,9 +2,10 @@
 
 import {Postman} from './postman';
 import yargs from 'yargs';
+import {YargsInterface} from "./interfaces/yargs.interface";
 
-
-const argv = yargs(process.argv.slice(2)).options({
+// @ts-ignore
+const argv: YargsInterface = yargs(process.argv.slice(2)).options({
     integrationName: {
         type: 'string',
         demandOption: true

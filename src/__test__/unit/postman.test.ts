@@ -1,12 +1,12 @@
 
 import {Postman} from '../../postman'
-import {PostmanController} from "../../interfaces/postmanController";
+import {PostmanControllerInterface} from "../../interfaces/postmanController.interface";
 import * as fs from "fs";
 
 jest.mock('fs');
 
 const mockWriteSync = jest.spyOn(fs as any, 'writeFile').mockImplementation();
-const obj: PostmanController[] = [{
+const obj: PostmanControllerInterface[] = [{
     name: 'Test',
     description: 'Description',
     routes: [{
@@ -42,7 +42,7 @@ describe('Postman Unit test', () =>{
                 description: 'Some description',
                 body: {}
             }]
-        } as PostmanController];
+        } as PostmanControllerInterface];
         const generateControllers = jest.spyOn(Postman.prototype as any, 'generateControllers').mockImplementation(() => newObj);
         await postman.run('../', './');
         expect(mockWriteSync).toHaveBeenCalledTimes(1);
@@ -116,7 +116,7 @@ describe('Postman Unit test', () =>{
                     'X-Auth': 'key'
                 }]
             }]
-        } as PostmanController];
+        } as PostmanControllerInterface];
         const generateControllers = jest.spyOn(Postman.prototype as any, 'generateControllers').mockImplementation(() => newObj);
         await postman.run('../', './');
         expect(mockWriteSync).toHaveBeenCalledTimes(1);
@@ -139,7 +139,7 @@ describe('Postman Unit test', () =>{
                 }],
                 params: ['query', 'user']
             }]
-        } as PostmanController];
+        } as PostmanControllerInterface];
         const generateControllers = jest.spyOn(Postman.prototype as any, 'generateControllers').mockImplementation(() => newObj);
         await postman.run('../', './');
         expect(mockWriteSync).toHaveBeenCalledTimes(1);

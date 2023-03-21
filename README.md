@@ -13,20 +13,20 @@ npm install --save @deskree/postman-collection-generator
 Import package either into the base class of your controllers or to each controller individually:
 
 ```
-import {PostmanController} from "@deskree/postman-collection-generator";
+import {PostmanControllerInterface} from "@deskree/postman-collection-generator";
 ```
 
 ## Using
 
 ### Controller Data Structure
 
-postman-collection-generator creates postman collections from express controllers. In order for the collection and items to be generated correctly, each controller has to be a class that implements a `PostmanController` and have the appropriate data structure. See example below:
+postman-collection-generator creates postman collections from express controllers. In order for the collection and items to be generated correctly, each controller has to be a class that implements a `PostmanControllerInterface` and have the appropriate data structure. See example below:
 
 ```
 // exampleController.ts
-import {PostmanController} from "@deskree/postman-collection-generator";
+import {PostmanControllerInterface} from "@deskree/postman-collection-generator";
 
-export class ExampleController implements PostmanController {
+export class ExampleController implements PostmanControllerInterface {
 
     public name = 'Example Name of Postman Folder';
     public description = 'Example Description of Postman Folder';
