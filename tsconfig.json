@@ -1,19 +1,27 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "outDir": "lib",
-    "sourceMap": true,
-    "strict": false,
-    "resolveJsonModule": true,
     "target": "es5",
-    "skipLibCheck": true,
+    "module": "commonjs",
+    "lib": [
+      "es6"
+    ],
+    "allowJs": true,
     "declaration": true,
-    "rootDir": "src"
+    "outDir": "lib",
+    "rootDir": "src",
+    "strict": true,
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true
   },
-  "compileOnSave": true,
   "include": [
-    "./src"
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "lib/**/*",
+    "**/*.spec.ts",
+    "**/*mock-handler.ts"
   ]
 }

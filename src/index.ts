@@ -1,7 +1,7 @@
 #!/usr/bin/env ts-node
 
 import {Postman} from './postman';
-import * as yargs from 'yargs';
+import yargs from 'yargs';
 
 
 const argv = yargs(process.argv.slice(2)).options({

@@ -1,4 +1,4 @@
-name: Github Private Package
+name: NPM Public Package
 
 on:
   release:

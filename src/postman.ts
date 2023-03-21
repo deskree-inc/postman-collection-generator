@@ -1,7 +1,8 @@
 import {PostmanController} from "./interfaces/postmanController";
-import {Collection, ItemGroup} from "postman-collection";
+import {Collection, Item, ItemGroup} from "postman-collection";
 import * as fs from "fs";
 import * as path from "path";
+import {PostmanRoute} from "./interfaces/postmanRoute";
 
 export class Postman {
 
@@ -53,11 +54,11 @@ export class Postman {
                 Postman.debug('Generating postman collection');
                 Postman.debug(`Working on ${controller.name}`);
             }
-            const group = new ItemGroup({name: controller.name});
+            const group: ItemGroup<Item> = new ItemGroup({name: controller.name});
             group.describe(controller.description);
 
             controller.routes.forEach((obj) => {
-                const request = {
+                const request: PostmanRoute = {
                     url: `${this._baseUrl}${obj.url}`,
                     method: obj.method,
                     headers: {}
@@ -73,11 +74,11 @@ export class Postman {
                         }
                     }
                 }
-                if (obj.hasOwnProperty('headers')) {
+                if (Object.prototype.hasOwnProperty.call(obj, 'headers') && obj.headers !== undefined) {
                     request.headers = obj.headers;
                 }
                 request.headers['Content-Type'] = 'application/json';
-                if (obj.hasOwnProperty('params')) {
+                if (Object.prototype.hasOwnProperty.call(obj, 'params') && obj.params !== undefined) {
                     request.url += '?';
                     for (const param of obj.params) {
                         request.url += `${param}&`
@@ -88,9 +89,10 @@ export class Postman {
                     request['description'] = obj.description
                 }
                 const item = {
-                    name: obj.name,
+                    name: obj.name ? obj.name : obj.url,
                     request: request
                 }
+                // @ts-ignore
                 group.items.add(item);
             });
 
@@ -120,7 +122,7 @@ export class Postman {
                     Postman.debug('File saved');
                     Postman.debug(JSON.stringify(collectionJSON));
                 }
-                process.exit(0);
+                // process.exit(0);
             }
         });
     }
@@ -147,7 +149,7 @@ export class Postman {
         }
     }
 
-    private static debug(message) {
+    private static debug(message: string | PostmanController) {
         console.info(message);
     }
 }

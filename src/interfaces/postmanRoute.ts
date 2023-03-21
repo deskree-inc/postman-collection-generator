@@ -1,9 +1,9 @@
 export interface PostmanRoute {
-    name: string,
+    name?: string,
     url: string,
     method: string,
     description?: string,
-    body?: string,
-    headers?: Array<Object>,
+    body?: Record<string, any>,
+    headers: Record<string, any>,
     params?: Array<string>
 }

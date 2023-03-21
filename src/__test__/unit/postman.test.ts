@@ -6,17 +6,18 @@ import * as fs from "fs";
 jest.mock('fs');
 
 const mockWriteSync = jest.spyOn(fs as any, 'writeFile').mockImplementation();
-const obj = [{
+const obj: PostmanController[] = [{
     name: 'Test',
     description: 'Description',
     routes: [{
         name: 'test endpoint',
+        headers: {},
         url: 'test',
         method: 'GET',
         description: 'Some description',
-        body: 'body'
+        body: {name: 'body'}
     }]
-} as PostmanController];
+}];
 describe('Postman Unit test', () =>{
     beforeEach(() => {
         jest.resetAllMocks();
@@ -35,10 +36,11 @@ describe('Postman Unit test', () =>{
             description: 'Description',
             routes: [{
                 name: 'test endpoint',
+                headers: {},
                 url: 'test',
                 method: 'GET',
                 description: 'Some description',
-                body: null
+                body: {}
             }]
         } as PostmanController];
         const generateControllers = jest.spyOn(Postman.prototype as any, 'generateControllers').mockImplementation(() => newObj);
@@ -59,6 +61,7 @@ describe('Postman Unit test', () =>{
         const postman = new Postman('Test', 'https://test.com');
         const generateControllers = jest.spyOn(Postman.prototype as any, 'generateControllers').mockImplementation(() => obj);
         postman.verbose = true;
+        // @ts-ignore
         mockWriteSync.mockImplementation((f,d,callback: () => void) => {
             callback()
         });
@@ -76,6 +79,7 @@ describe('Postman Unit test', () =>{
 
             expect(generateControllers).toHaveBeenCalledTimes(1);
             expect(mockWriteSync).toHaveBeenCalledTimes(0);
+            // @ts-ignore
             expect(e.message).toBe('controllers is not iterable');
         }
 
@@ -84,6 +88,7 @@ describe('Postman Unit test', () =>{
     it('Generate controllers with exception on write the file', async () => {
         const postman = new Postman('Test', 'https://test.com');
         const generateControllers = jest.spyOn(Postman.prototype as any, 'generateControllers').mockImplementation(() => obj);
+        // @ts-ignore
         mockWriteSync.mockImplementation((f,d,callback: (error:string) => void) => {
             callback('error')
         });
@@ -106,7 +111,7 @@ describe('Postman Unit test', () =>{
                 url: 'test',
                 method: 'GET',
                 description: 'Some description',
-                body: null,
+                body: {},
                 headers: [{
                     'X-Auth': 'key'
                 }]
@@ -128,7 +133,7 @@ describe('Postman Unit test', () =>{
                 url: 'test',
                 method: 'GET',
                 description: 'Some description',
-                body: null,
+                body: {},
                 headers: [{
                     'X-Auth': 'key'
                 }],
