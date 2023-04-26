@@ -127,7 +127,7 @@ export class Postman {
                     Postman.debug('File saved');
                     Postman.debug(JSON.stringify(collectionJSON));
                 }
-                // process.exit(0);
+                process.exit(0);
             }
         });
     }
