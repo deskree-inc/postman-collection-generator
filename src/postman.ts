@@ -15,6 +15,7 @@ export class Postman {
     public set verbose(value: boolean) {
         this._verbose = value;
     }
+
     constructor(integrationName: string, baseUrl: string, skipExceptions?: boolean) {
         this._collectionName = integrationName;
         this._baseUrl = baseUrl;
@@ -29,7 +30,7 @@ export class Postman {
     private generateControllers(dirPath: string): PostmanControllerInterface[] {
         const files = fs.readdirSync(dirPath);
         const response = [];
-        for(const file of files) {
+        for (const file of files) {
             const location = path.join(`${process.cwd()}/${dirPath}/${file}`);
             const _module = require(path.join(`${process.cwd()}/${dirPath}`, file)).default;
             if (_module) {
@@ -113,7 +114,7 @@ export class Postman {
                 if (!this.skipExceptions) {
                     if (typeof e === "string") {
                         Postman.debug(e);
-                    } else if (typeof e === "object"){
+                    } else if (typeof e === "object") {
                         Postman.debug(JSON.stringify(e));
                     } else {
                         console.error(e);
@@ -133,7 +134,8 @@ export class Postman {
 
     public run(dirPath: string, outputPath: string) {
         try {
-            Postman.debug(`Initialized postman collection generation from directory ${dirPath}. Saving data to ${outputPath}`);
+            Postman.debug(
+                `Initialized postman collection generation from directory ${dirPath}. Saving data to ${outputPath}`);
             const controllers = this.generateControllers(dirPath);
             Postman.debug("List of all controllers:");
             for (const controller of controllers) {
@@ -142,14 +144,16 @@ export class Postman {
             }
             this.saveFile(outputPath);
         } catch (e) {
-            if (typeof e === "string") {
-                Postman.debug(e);
-            } else if (typeof e === "object"){
-                Postman.debug(JSON.stringify(e));
-            } else {
-                console.error(e);
+            if (!this.skipExceptions) {
+                if (typeof e === "string") {
+                    Postman.debug(e);
+                } else if (typeof e === "object") {
+                    Postman.debug(JSON.stringify(e));
+                } else {
+                    console.error(e);
+                }
+                throw e;
             }
-            throw e;
         }
     }
 
