@@ -10,13 +10,15 @@ export class Postman {
     private readonly _collectionName: string;
     private readonly _baseUrl: string;
     private _verbose: boolean = false;
+    private skipExceptions: boolean = false;
 
     public set verbose(value: boolean) {
         this._verbose = value;
     }
-    constructor(integrationName: string, baseUrl: string) {
+    constructor(integrationName: string, baseUrl: string, skipExceptions?: boolean) {
         this._collectionName = integrationName;
         this._baseUrl = baseUrl;
+        this.skipExceptions = skipExceptions !== undefined ? skipExceptions : false;
         this.postmanCollection = new Collection({
             info: {
                 name: this._collectionName
@@ -108,15 +110,17 @@ export class Postman {
         // Create a collection.json file. It can be imported to postman
         fs.writeFile(`${outputPath}/collection.json`, JSON.stringify(collectionJSON), (e) => {
             if (e) {
-                if (typeof e === "string") {
-                    Postman.debug(e);
-                } else if (typeof e === "object"){
-                    Postman.debug(JSON.stringify(e));
-                } else {
-                    console.error(e);
+                if (!this.skipExceptions) {
+                    if (typeof e === "string") {
+                        Postman.debug(e);
+                    } else if (typeof e === "object"){
+                        Postman.debug(JSON.stringify(e));
+                    } else {
+                        console.error(e);
+                    }
+                    process.exit(1);
+                    throw e;
                 }
-                process.exit(1);
-                throw e;
             } else {
                 if (this._verbose) {
                     Postman.debug('File saved');

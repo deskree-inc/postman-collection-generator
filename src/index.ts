@@ -3,6 +3,7 @@
 import {Postman} from './postman';
 import yargs from 'yargs';
 import {YargsInterface} from "./interfaces/yargs.interface";
+import {PostmanControllerInterface} from "./interfaces/postmanController.interface";
 
 // @ts-ignore
 const argv: YargsInterface = yargs(process.argv.slice(2)).options({
@@ -22,6 +23,10 @@ const argv: YargsInterface = yargs(process.argv.slice(2)).options({
         type: 'string',
         demandOption: true
     },
+    skipExceptions: {
+        type: 'boolean',
+        demandOption: false
+    },
     verbose: {
         alias: 'v',
         type: 'boolean',
@@ -29,9 +34,11 @@ const argv: YargsInterface = yargs(process.argv.slice(2)).options({
     }
 }).argv;
 
-const postman = new Postman(argv.integrationName, argv.baseURL);
+const postman = new Postman(argv.integrationName, argv.baseURL, argv.skipExceptions);
 if (argv.verbose) {
     postman.verbose = true;
 }
 postman.run(argv.folder, argv.outputDir);
+
+export {PostmanControllerInterface};
 

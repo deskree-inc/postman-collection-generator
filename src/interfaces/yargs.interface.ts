@@ -4,4 +4,5 @@ export interface YargsInterface {
     folder: string;
     outputDir: string;
     verbose: boolean;
+    skipExceptions: boolean;
 }
