@@ -58,6 +58,9 @@
     "postman-collection": "^4.1.7",
     "yargs": "^17.7.1"
   },
+  "overrides": {
+    "semver": "7.5.4"
+  },
   "directories": {
     "lib": "lib"
   }
