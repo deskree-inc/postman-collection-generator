@@ -59,7 +59,8 @@
     "yargs": "^17.7.1"
   },
   "overrides": {
-    "semver": "7.5.4"
+    "semver": "7.5.4",
+    "braces": "3.0.3"
   },
   "directories": {
     "lib": "lib"
